@@ -9,7 +9,7 @@ Feature: Client
     And header Content-Type = application/json
     And header Accept = */*
     And body read(jsons/bodies/addnewClient.json)
-    And set value Banco Nuevo2 of key name in body jsons/bodies/addnewClient.json
+    And set value Banco Nuevo of key name in body jsons/bodies/addnewClient.json
     When execute method POST
     Then the status code should be 201
     And response should be name = Banco Nuevo
