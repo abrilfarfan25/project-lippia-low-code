@@ -21,8 +21,31 @@ Feature: Workspaces
       And response should be $.name = Crowdar
       * print response
 
+   @badrequestWorkspace
+   Scenario: Validate on required parameters
+     Given base url https://api.clockify.me/api
+     And endpoint /v1/workspaces
+     And header x-api-key = MmRjYjA5YjYtNjE3Mi00MzA5LWFkMmUtYmVhNWYzOTVkNDE5
+     And header Content-Type = application/json
+     And header Accept = */*
+     And body read(jsons/bodies/addnewWorkspace.json)
+     When execute method POST
+     Then the status code should be 400
+     And verify the response $.message 'contains' "Invalid ObjectId provided for field 'organizationId'"
+     * print response
 
 
+    @unauthorizedWorkspace
+    Scenario: Validate unauthorized access
+      Given base url https://api.clockify.me/api
+      And endpoint /v1/workspaces
+      And header x-api-key = INVALID_API_KEY
+      And header Content-Type = application/json
+      And header Accept = */*
+      When execute method GET
+      Then the status code should be 401
+      And verify the response $.message 'contains' 'Unauthorized'
+      * print response
 
 
 
