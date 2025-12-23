@@ -9,8 +9,11 @@ Feature: Workspaces
         Then the status code should be 200
         * print response
         * define idWorkspace = $[0].id
+        ##  $[?(@.name=='Crowdar')][0].id
+        ## Toma el primer elemento del resultado filtrado por nombre de workspace
+        ## idWorkspace = 6902d12cf51ed03d2c4af11c
 
-    @get-infoWorkspace
+  @get-infoWorkspace
     Scenario: Get Workspace info
       Given call Workspace.feature@get-allWorkspaces
       And base url https://api.clockify.me/api
@@ -33,7 +36,6 @@ Feature: Workspaces
      Then the status code should be 400
      And verify the response $.message 'contains' "Invalid ObjectId provided for field 'organizationId'"
      * print response
-
 
     @unauthorizedWorkspace
     Scenario: Validate unauthorized access
