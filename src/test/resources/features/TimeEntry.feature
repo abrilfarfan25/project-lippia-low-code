@@ -18,8 +18,10 @@ Feature: TimeEntry
     And header Content-Type = application/json
     And header Accept = */*
     And body read(jsons/bodies/addnewTimeEntry.json)
+    And set value Horas extras of key description in body jsons/bodies/addnewTimeEntry.json
     When execute method POST
     Then the status code should be 201
+    And response should be description = Horas extras
     * print response
     * define idTimeEntry = $.id
 
@@ -42,4 +44,14 @@ Feature: TimeEntry
     When execute method DELETE
     Then the status code should be 204
     * print response
+    And call TimeEntry.feature@validate-deleted
+
+  @validate-deleted
+  Scenario: Validate time entry was deleted
+    And endpoint /v1/workspaces/6902d12cf51ed03d2c4af11c/time-entries/{{idTimeEntry}}
+    When execute method GET
+    Then the status code should be 400
+    And response should be $.message = Time entry doesn't belong to Workspace
+
+
 
